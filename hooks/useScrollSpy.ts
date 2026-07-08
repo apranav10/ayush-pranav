@@ -74,12 +74,13 @@ export function useScrollSpy() {
         return;
       }
 
-      if ("onscrollend" in window) {
+      const supportsScrollEnd = "onscrollend" in window;
+      if (supportsScrollEnd) {
         window.addEventListener("scrollend", finishScroll, { once: true });
         return;
       }
 
-      window.setTimeout(finishScroll, 750);
+      setTimeout(finishScroll, 750);
     },
     [],
   );
