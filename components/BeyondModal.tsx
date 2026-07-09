@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import type { BeyondWorkItem } from "@/lib/types";
+import { useOverlayHistory } from "@/hooks/useOverlayHistory";
 import { DriveImage } from "./DriveImage";
 
 export function BeyondModal({
@@ -11,10 +12,12 @@ export function BeyondModal({
   item: BeyondWorkItem | null;
   onClose: () => void;
 }) {
+  const requestClose = useOverlayHistory(!!item, onClose);
+
   useEffect(() => {
     if (!item) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") requestClose();
     };
     document.addEventListener("keydown", onKey);
     document.body.style.overflow = "hidden";
@@ -22,14 +25,14 @@ export function BeyondModal({
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
     };
-  }, [item, onClose]);
+  }, [item, requestClose]);
 
   if (!item) return null;
 
   return (
     <div
       className="fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6 bg-black/55"
-      onClick={(e) => e.target === e.currentTarget && onClose()}
+      onClick={(e) => e.target === e.currentTarget && requestClose()}
       role="dialog"
       aria-modal="true"
       aria-label="Photo detail"
@@ -42,9 +45,9 @@ export function BeyondModal({
       >
         <button
           type="button"
-          onClick={onClose}
+          onClick={requestClose}
           aria-label="Close"
-          className="absolute -top-3 -right-3 z-20 w-8 h-8 rounded-full bg-fg text-white text-lg flex items-center justify-center hover:bg-primary transition-colors shadow-card"
+          className="absolute -top-3 -right-3 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-fg text-lg text-white shadow-card transition-colors hover:bg-primary max-md:top-3 max-md:right-3 max-md:h-11 max-md:w-11 max-md:text-xl"
         >
           ×
         </button>

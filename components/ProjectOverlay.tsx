@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState, type RefObject } from "react"
 import type { Project } from "@/lib/types";
 import { fetchDoc } from "@/lib/docs";
 import { parsePipe } from "@/lib/utils";
+import { useOverlayHistory } from "@/hooks/useOverlayHistory";
 import { DriveImage } from "./DriveImage";
 
 const RAIL_STICKY_TOP_PX = 24;
@@ -137,6 +138,8 @@ export function ProjectOverlay({
   const docRef = useRef<HTMLDivElement>(null);
   const lockedScrollY = useRef(0);
 
+  const requestClose = useOverlayHistory(!!project, onClose);
+
   const updateRailAlign = useCallback(() => {
     if (typeof window === "undefined" || window.innerWidth < 1024) {
       setRailAlign(undefined);
@@ -222,12 +225,12 @@ export function ProjectOverlay({
     if (!project) return;
 
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === "Escape") onClose();
+      if (event.key === "Escape") requestClose();
     };
 
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [project, onClose]);
+  }, [project, requestClose]);
 
   useEffect(() => {
     if (!project || loading) return;
@@ -294,7 +297,7 @@ export function ProjectOverlay({
       {showFloatingClose && (
         <button
           type="button"
-          onClick={onClose}
+          onClick={requestClose}
           className="project-overlay-close-fab"
           aria-label="Close project"
         >
@@ -313,7 +316,7 @@ export function ProjectOverlay({
               width={1600}
               className="project-overlay-cover-img"
             />
-            <ProjectBackButton backRef={backRef} onClose={onClose} overlaid />
+            <ProjectBackButton backRef={backRef} onClose={requestClose} overlaid />
           </div>
           <div className="page-shell project-overlay-body project-overlay-body--with-cover pb-20 w-full">
             {contentGrid}
@@ -321,7 +324,7 @@ export function ProjectOverlay({
         </>
       ) : (
         <div className="page-shell project-overlay-body py-20 w-full">
-          <ProjectBackButton backRef={backRef} onClose={onClose} />
+          <ProjectBackButton backRef={backRef} onClose={requestClose} />
           {contentGrid}
         </div>
       )}

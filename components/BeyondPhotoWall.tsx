@@ -50,7 +50,6 @@ function getDefaultSpans(kind: AspectKind, cols: number, itemId?: string): TileS
     return DESKTOP_SPAN_OVERRIDES[itemId];
   }
   if (cols === 1) {
-    if (kind === "portrait") return { colSpan: 1, rowSpan: 2 };
     return { colSpan: 1, rowSpan: 1 };
   }
   if (cols === 2) {
@@ -246,7 +245,7 @@ function useGridColumns() {
   useEffect(() => {
     const update = () => {
       const width = window.innerWidth;
-      if (width < 640) setCols(1);
+      if (width < 768) setCols(1);
       else if (width < 1024) setCols(2);
       else setCols(4);
     };
@@ -338,6 +337,48 @@ export function BeyondPhotoWall({
 
   if (!tiles.length) {
     return <p className="text-fg-faint text-sm text-center py-8">Photos coming soon.</p>;
+  }
+
+  if (cols === 1) {
+    return (
+      <div className="beyond-photo-mobile-stack max-md:max-w-full max-md:min-w-0">
+        {approved.map((item, index) => {
+          const kind = normalizeAspect(item.aspect_ratio);
+          const driveId = getDriveImageId(item);
+
+          return (
+            <button
+              key={`beyond-mobile-${index}-${item.id}`}
+              type="button"
+              onClick={() => onSelect(item)}
+              className="beyond-photo-tile beyond-photo-tile--stack group"
+              data-aspect={kind}
+            >
+              {driveId ? (
+                <DriveImage
+                  fileId={driveId}
+                  alt={item.caption || "Beyond work photo"}
+                  width={960}
+                  className="beyond-photo-tile-image beyond-photo-tile-image--stack"
+                />
+              ) : (
+                <div
+                  className="beyond-photo-tile-image beyond-photo-tile-image--stack bg-bg-alt border border-dashed border-border-mid"
+                  aria-hidden
+                />
+              )}
+              <div className="beyond-photo-tile-overlay" aria-hidden />
+              {item.category && (
+                <span className="beyond-photo-tile-category">{item.category}</span>
+              )}
+              {item.caption && (
+                <span className="beyond-photo-tile-caption">{item.caption}</span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    );
   }
 
   return (

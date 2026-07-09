@@ -76,22 +76,48 @@ export function About({ sections }: { sections: AboutSection[] }) {
             No about sections yet.
           </p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-4 lg:gap-5 items-start">
-            <nav className="experience-rail shrink-0" aria-label="About sections">
-              {sections.map((section, i) => (
-                <AboutRailItem
-                  key={`${section.section_header}-${section.order ?? i}`}
-                  label={section.section_header}
-                  active={activeIdx === i}
-                  onClick={() => setActiveIdx(i)}
-                />
-              ))}
-            </nav>
+          <>
+            <div className="hidden md:grid md:grid-cols-[280px_1fr] gap-4 lg:gap-5 items-start">
+              <nav className="experience-rail shrink-0" aria-label="About sections">
+                {sections.map((section, i) => (
+                  <AboutRailItem
+                    key={`${section.section_header}-${section.order ?? i}`}
+                    label={section.section_header}
+                    active={activeIdx === i}
+                    onClick={() => setActiveIdx(i)}
+                  />
+                ))}
+              </nav>
 
-            <div className="experience-panel-card bg-surface border border-border rounded-card shadow-card">
-              {active && <AboutPanel key={active.section_header} section={active} />}
+              <div className="experience-panel-card bg-surface border border-border rounded-card shadow-card">
+                {active && <AboutPanel key={active.section_header} section={active} />}
+              </div>
             </div>
-          </div>
+
+            <div className="flex flex-col gap-2 md:hidden" aria-label="About sections">
+              {sections.map((section, i) => {
+                const isActive = activeIdx === i;
+
+                return (
+                  <div
+                    key={`${section.section_header}-${section.order ?? i}`}
+                    className="flex flex-col gap-2"
+                  >
+                    <AboutRailItem
+                      label={section.section_header}
+                      active={isActive}
+                      onClick={() => setActiveIdx(i)}
+                    />
+                    {isActive && (
+                      <div className="experience-panel-card bg-surface border border-border rounded-card shadow-card">
+                        <AboutPanel section={section} />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
     </SectionCard>

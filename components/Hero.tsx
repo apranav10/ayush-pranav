@@ -97,7 +97,7 @@ export function Hero({ config }: { config: SiteConfig }) {
           </div>
 
           <div className="hero-cta-block shrink-0 flex flex-col items-start gap-2.5 max-md:w-full">
-            <div className="flex flex-wrap items-center gap-3 max-md:w-full max-md:flex-col max-md:items-stretch max-md:gap-2.5">
+            <div className="flex flex-wrap items-center gap-3 max-md:hidden">
               {config.linkedin_url && (
                 <a
                   href={config.linkedin_url}
@@ -120,11 +120,45 @@ export function Hero({ config }: { config: SiteConfig }) {
               )}
               <a
                 href="#work"
-                className="hero-action-btn inline-flex items-center justify-center gap-2 px-5 bg-primary text-white rounded-card text-sm font-medium tracking-wide transition-colors duration-300 ease-out hover:bg-secondary border-2 border-primary max-md:w-full"
+                className="hero-action-btn inline-flex items-center justify-center gap-2 px-5 bg-primary text-white rounded-card text-sm font-medium tracking-wide transition-colors duration-300 ease-out hover:bg-secondary border-2 border-primary"
               >
                 View my work →
               </a>
             </div>
+
+            <div className="hidden max-md:flex max-md:flex-col max-md:w-full max-md:gap-2.5">
+              {(config.linkedin_url || config.email) && (
+                <div className="flex items-center gap-3">
+                  {config.linkedin_url && (
+                    <a
+                      href={config.linkedin_url}
+                      target="_blank"
+                      rel="noopener"
+                      aria-label="LinkedIn"
+                      className="hero-action-btn w-[46px] rounded-card border-2 border-border-mid bg-surface shadow-card flex items-center justify-center text-fg hover:text-white hover:bg-primary hover:border-primary transition-colors duration-300 ease-out"
+                    >
+                      <LinkedInIcon className="!w-[24px] !h-[24px]" />
+                    </a>
+                  )}
+                  {config.email && (
+                    <a
+                      href={`mailto:${config.email}`}
+                      aria-label="Email"
+                      className="hero-action-btn w-[46px] rounded-card border-2 border-border-mid bg-surface shadow-card flex items-center justify-center text-fg hover:text-white hover:bg-primary hover:border-primary transition-colors duration-300 ease-out"
+                    >
+                      <EmailIcon className="!w-[24px] !h-[24px]" strokeWidth="2.2" />
+                    </a>
+                  )}
+                </div>
+              )}
+              <a
+                href="#work"
+                className="hero-action-btn inline-flex w-full items-center justify-center gap-2 px-5 bg-primary text-white rounded-card text-sm font-medium tracking-wide transition-colors duration-300 ease-out hover:bg-secondary border-2 border-primary"
+              >
+                View my work →
+              </a>
+            </div>
+
             <a href="#experience" className="hero-secondary-cta">
               or see my experience →
             </a>

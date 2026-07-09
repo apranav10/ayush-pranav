@@ -593,6 +593,30 @@
     @apply absolute bottom-2 right-2 z-10 max-w-[85%] text-right text-xs font-medium text-white opacity-0 translate-y-1 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none drop-shadow-sm;
   }
 
+  .beyond-photo-mobile-stack {
+    @apply flex w-full min-w-0 flex-col gap-4;
+  }
+
+  .beyond-photo-tile--stack {
+    @apply h-auto min-h-0 w-full;
+  }
+
+  .beyond-photo-tile--stack[data-aspect="portrait"] {
+    aspect-ratio: 3 / 4;
+  }
+
+  .beyond-photo-tile--stack[data-aspect="landscape"] {
+    aspect-ratio: 4 / 3;
+  }
+
+  .beyond-photo-tile--stack[data-aspect="square"] {
+    aspect-ratio: 1 / 1;
+  }
+
+  .beyond-photo-tile-image--stack {
+    @apply static inset-auto h-full w-full;
+  }
+
   .beyond-modal {
     @apply relative flex w-[min(92vw,440px)] max-w-full flex-col bg-white rounded-sm;
   }
