@@ -65,6 +65,7 @@ export function About({ sections }: { sections: AboutSection[] }) {
     sections.findIndex((s) => Number(s.order) === 1),
   );
   const [activeIdx, setActiveIdx] = useState(defaultIdx);
+  const [mobileActiveIdx, setMobileActiveIdx] = useState<number | null>(null);
   const mobileItemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const active = sections[activeIdx];
 
@@ -98,7 +99,7 @@ export function About({ sections }: { sections: AboutSection[] }) {
 
             <div className="flex flex-col gap-2 md:hidden" aria-label="About sections">
               {sections.map((section, i) => {
-                const isActive = activeIdx === i;
+                const isActive = mobileActiveIdx === i;
 
                 return (
                   <div
@@ -112,9 +113,10 @@ export function About({ sections }: { sections: AboutSection[] }) {
                       label={section.section_header}
                       active={isActive}
                       onClick={() => {
-                        const isNew = activeIdx !== i;
-                        setActiveIdx(i);
-                        if (isNew) {
+                        const willExpand = mobileActiveIdx !== i;
+                        setMobileActiveIdx(willExpand ? i : null);
+                        if (willExpand) {
+                          setActiveIdx(i);
                           scrollMobileAccordionHeader(mobileItemRefs.current[i]);
                         }
                       }}

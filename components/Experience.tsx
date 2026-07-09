@@ -365,6 +365,7 @@ export function Experience({
   onEntrySelect?: (id: string) => void;
 }) {
   const [activeIdx, setActiveIdx] = useState(0);
+  const [mobileActiveIdx, setMobileActiveIdx] = useState<number | null>(null);
   const [showAllRail, setShowAllRail] = useState(false);
   const mobileItemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const active = entries[activeIdx];
@@ -374,6 +375,7 @@ export function Experience({
     const idx = entries.findIndex((entry) => entry.id === activeEntryId);
     if (idx >= 0) {
       setActiveIdx(idx);
+      setMobileActiveIdx(idx);
       if (idx >= RAIL_DEFAULT_VISIBLE) setShowAllRail(true);
     }
   }, [activeEntryId, entries]);
@@ -463,7 +465,7 @@ export function Experience({
                 const name = getRailEntryName(entry);
                 const subtitle = isWork ? entry.role_title : entry.program;
                 const dateRange = formatDateRange(entry.start_date, entry.end_date);
-                const isActive = activeIdx === i;
+                const isActive = mobileActiveIdx === i;
 
                 return (
                   <div
@@ -480,10 +482,11 @@ export function Experience({
                       dateRange={dateRange}
                       active={isActive}
                       onClick={() => {
-                        const isNew = activeIdx !== i;
-                        setActiveIdx(i);
-                        onEntrySelect?.(entry.id);
-                        if (isNew) {
+                        const willExpand = mobileActiveIdx !== i;
+                        setMobileActiveIdx(willExpand ? i : null);
+                        if (willExpand) {
+                          setActiveIdx(i);
+                          onEntrySelect?.(entry.id);
                           scrollMobileAccordionHeader(mobileItemRefs.current[i]);
                         }
                       }}
