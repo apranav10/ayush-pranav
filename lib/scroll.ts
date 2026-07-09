@@ -15,6 +15,30 @@ export function getSectionScrollTop(el: HTMLElement): number {
   );
 }
 
+/** Scroll so an element's top sits just below the fixed nav (mobile accordion headers, etc.). */
+export function scrollHeaderBelowNav(
+  el: HTMLElement | null,
+  behavior: ScrollBehavior = "smooth",
+) {
+  if (!el) return;
+
+  const scrollBehavior: ScrollBehavior =
+    behavior === "smooth" && prefersReducedMotion() ? "auto" : behavior;
+
+  window.scrollTo({
+    top: getSectionScrollTop(el),
+    behavior: scrollBehavior,
+  });
+}
+
+/** After a mobile accordion panel opens, scroll its header below the fixed nav. */
+export function scrollMobileAccordionHeader(el: HTMLElement | null) {
+  if (!el || typeof window === "undefined" || window.innerWidth > 767) return;
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => scrollHeaderBelowNav(el));
+  });
+}
+
 export function isSectionAligned(id: SectionId | string): boolean {
   const el = document.getElementById(id);
   if (!el) return false;

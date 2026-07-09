@@ -622,7 +622,7 @@
   }
 
   .beyond-modal-reflection {
-    @apply m-0 px-6 pt-5 pb-3.5 text-sm italic text-fg-muted text-center leading-relaxed;
+    @apply m-0 px-6 pt-5 pb-3.5 text-sm italic text-fg-muted text-center leading-relaxed max-md:px-5 max-md:pt-1;
   }
 
   .beyond-modal-photo-wrap {

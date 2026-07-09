@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type {
   EducationExperienceEntry,
   ExperienceEntry,
@@ -14,6 +14,7 @@ import {
   parseValueLabelPairs,
 } from "@/lib/utils";
 import { DriveImage } from "./DriveImage";
+import { scrollMobileAccordionHeader } from "@/lib/scroll";
 import { SectionCard } from "./SectionCard";
 import { SectionPageHeader } from "./SectionPageHeader";
 
@@ -365,6 +366,7 @@ export function Experience({
 }) {
   const [activeIdx, setActiveIdx] = useState(0);
   const [showAllRail, setShowAllRail] = useState(false);
+  const mobileItemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const active = entries[activeIdx];
 
   useEffect(() => {
@@ -464,7 +466,13 @@ export function Experience({
                 const isActive = activeIdx === i;
 
                 return (
-                  <div key={entry.id} className="flex flex-col gap-2">
+                  <div
+                    key={entry.id}
+                    ref={(el) => {
+                      mobileItemRefs.current[i] = el;
+                    }}
+                    className="flex flex-col gap-2"
+                  >
                     <RailItem
                       category={getEntryCategory(entry)}
                       name={name}
@@ -472,8 +480,12 @@ export function Experience({
                       dateRange={dateRange}
                       active={isActive}
                       onClick={() => {
+                        const isNew = activeIdx !== i;
                         setActiveIdx(i);
                         onEntrySelect?.(entry.id);
+                        if (isNew) {
+                          scrollMobileAccordionHeader(mobileItemRefs.current[i]);
+                        }
                       }}
                     />
                     {isActive && (

@@ -43,11 +43,24 @@ export function BeyondModal({
           boxShadow: "0 12px 40px rgba(15,23,42,0.22), 0 2px 8px rgba(15,23,42,0.08)",
         }}
       >
+        <div className="flex justify-end px-4 pt-3 md:hidden">
+          <button
+            type="button"
+            onClick={requestClose}
+            aria-label="Close"
+            className="flex h-11 w-11 shrink-0 items-center justify-center p-1.5"
+          >
+            <span className="flex h-8 w-8 items-center justify-center rounded-full bg-fg text-base text-white shadow-card transition-colors hover:bg-primary">
+              ×
+            </span>
+          </button>
+        </div>
+
         <button
           type="button"
           onClick={requestClose}
           aria-label="Close"
-          className="absolute -top-3 -right-3 z-20 flex h-8 w-8 items-center justify-center rounded-full bg-fg text-lg text-white shadow-card transition-colors hover:bg-primary max-md:top-3 max-md:right-3 max-md:h-11 max-md:w-11 max-md:text-xl"
+          className="absolute -top-3 -right-3 z-20 hidden h-8 w-8 items-center justify-center rounded-full bg-fg text-lg text-white shadow-card transition-colors hover:bg-primary md:flex"
         >
           ×
         </button>

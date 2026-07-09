@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import type { AboutSection } from "@/lib/types";
+import { scrollMobileAccordionHeader } from "@/lib/scroll";
 import { DriveImage } from "./DriveImage";
 import { SectionCard } from "./SectionCard";
 import { SectionPageHeader } from "./SectionPageHeader";
@@ -64,6 +65,7 @@ export function About({ sections }: { sections: AboutSection[] }) {
     sections.findIndex((s) => Number(s.order) === 1),
   );
   const [activeIdx, setActiveIdx] = useState(defaultIdx);
+  const mobileItemRefs = useRef<(HTMLDivElement | null)[]>([]);
   const active = sections[activeIdx];
 
   return (
@@ -101,12 +103,21 @@ export function About({ sections }: { sections: AboutSection[] }) {
                 return (
                   <div
                     key={`${section.section_header}-${section.order ?? i}`}
+                    ref={(el) => {
+                      mobileItemRefs.current[i] = el;
+                    }}
                     className="flex flex-col gap-2"
                   >
                     <AboutRailItem
                       label={section.section_header}
                       active={isActive}
-                      onClick={() => setActiveIdx(i)}
+                      onClick={() => {
+                        const isNew = activeIdx !== i;
+                        setActiveIdx(i);
+                        if (isNew) {
+                          scrollMobileAccordionHeader(mobileItemRefs.current[i]);
+                        }
+                      }}
                     />
                     {isActive && (
                       <div className="experience-panel-card bg-surface border border-border rounded-card shadow-card">
