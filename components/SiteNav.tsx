@@ -120,14 +120,14 @@ export function SiteNav({
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden absolute top-full left-0 right-0 bg-bg/98 backdrop-blur-md border-b border-border shadow-card">
-          <div className="page-shell py-3 flex flex-col gap-0.5">
+        <div className="md:hidden absolute top-full left-0 right-0 z-[110] bg-bg border-b border-border shadow-card">
+          <div className="page-shell py-4 flex flex-col gap-1">
             {SECTIONS.map((id) => (
               <button
                 key={id}
                 type="button"
                 onClick={() => { onNavigate(id); setMobileOpen(false); }}
-                className={`nav-link text-left w-full py-2.5 ${activeSection === id ? "active" : ""}`}
+                className={`nav-link text-left w-full py-3 ${activeSection === id ? "active" : ""}`}
               >
                 {SECTION_NAV_SHORT[id]}
               </button>

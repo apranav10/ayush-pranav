@@ -392,6 +392,13 @@ export function Experience({
     edu_zone5: config.edu_zone4_label || DEFAULT_LABELS.edu_zone5,
   };
 
+  const renderPanel = (entry: ExperienceEntry) =>
+    entry._type === "work" ? (
+      <WorkPanel key={entry.id} role={entry} labels={labels} />
+    ) : (
+      <EducationPanel key={entry.id} edu={entry} labels={labels} />
+    );
+
   return (
     <SectionCard id="experience" ariaLabel="Experience" bgClassName="bg-bg">
       <SectionPageHeader eyebrow="Experience" heading="The work so far." />
@@ -402,31 +409,79 @@ export function Experience({
             No experience entries yet.
           </p>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-[280px_1fr] gap-4 lg:gap-5 items-start">
-            <nav
-              className={`experience-rail shrink-0${showAllRail ? " experience-rail--expanded" : ""}`}
-              aria-label="Experience entries"
-            >
+          <>
+            <div className="hidden md:grid md:grid-cols-[280px_1fr] gap-4 lg:gap-5 items-start">
+              <nav
+                className={`experience-rail shrink-0${showAllRail ? " experience-rail--expanded" : ""}`}
+                aria-label="Experience entries"
+              >
+                {visibleEntries.map((entry) => {
+                  const i = entries.findIndex((item) => item.id === entry.id);
+                  const isWork = entry._type === "work";
+                  const name = getRailEntryName(entry);
+                  const subtitle = isWork ? entry.role_title : entry.program;
+                  const dateRange = formatDateRange(entry.start_date, entry.end_date);
+
+                  return (
+                    <RailItem
+                      key={entry.id}
+                      category={getEntryCategory(entry)}
+                      name={name}
+                      subtitle={subtitle}
+                      dateRange={dateRange}
+                      active={activeIdx === i}
+                      onClick={() => {
+                        setActiveIdx(i);
+                        onEntrySelect?.(entry.id);
+                      }}
+                    />
+                  );
+                })}
+
+                {!showAllRail && hiddenCount > 0 && (
+                  <button
+                    type="button"
+                    className="experience-rail-more hero-secondary-cta"
+                    onClick={() => setShowAllRail(true)}
+                  >
+                    Show {hiddenCount} more →
+                  </button>
+                )}
+              </nav>
+
+              <div className="experience-panel-card bg-surface border border-border rounded-card shadow-card">
+                {active && renderPanel(active)}
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2 md:hidden" aria-label="Experience entries">
               {visibleEntries.map((entry) => {
                 const i = entries.findIndex((item) => item.id === entry.id);
                 const isWork = entry._type === "work";
                 const name = getRailEntryName(entry);
                 const subtitle = isWork ? entry.role_title : entry.program;
                 const dateRange = formatDateRange(entry.start_date, entry.end_date);
+                const isActive = activeIdx === i;
 
                 return (
-                  <RailItem
-                    key={entry.id}
-                    category={getEntryCategory(entry)}
-                    name={name}
-                    subtitle={subtitle}
-                    dateRange={dateRange}
-                    active={activeIdx === i}
-                    onClick={() => {
-                      setActiveIdx(i);
-                      onEntrySelect?.(entry.id);
-                    }}
-                  />
+                  <div key={entry.id} className="flex flex-col gap-2">
+                    <RailItem
+                      category={getEntryCategory(entry)}
+                      name={name}
+                      subtitle={subtitle}
+                      dateRange={dateRange}
+                      active={isActive}
+                      onClick={() => {
+                        setActiveIdx(i);
+                        onEntrySelect?.(entry.id);
+                      }}
+                    />
+                    {isActive && (
+                      <div className="experience-panel-card bg-surface border border-border rounded-card shadow-card">
+                        {renderPanel(entry)}
+                      </div>
+                    )}
+                  </div>
                 );
               })}
 
@@ -439,17 +494,8 @@ export function Experience({
                   Show {hiddenCount} more →
                 </button>
               )}
-            </nav>
-
-            <div className="experience-panel-card bg-surface border border-border rounded-card shadow-card">
-              {active &&
-                (active._type === "work" ? (
-                  <WorkPanel key={active.id} role={active} labels={labels} />
-                ) : (
-                  <EducationPanel key={active.id} edu={active} labels={labels} />
-                ))}
             </div>
-          </div>
+          </>
         )}
       </div>
     </SectionCard>

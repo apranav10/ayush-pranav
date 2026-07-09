@@ -550,15 +550,15 @@
   }
 
   .beyond-section-body {
-    @apply overflow-visible flex-none pb-28 max-md:pb-12;
+    @apply overflow-visible flex-none pb-28 max-md:pb-12 max-md:overflow-x-hidden max-md:min-w-0;
   }
 
   .beyond-photo-grid-shell {
-    @apply w-full min-h-[240px] overflow-hidden rounded-card border border-border bg-bg-alt/40;
+    @apply w-full min-h-[240px] overflow-hidden rounded-card border border-border bg-bg-alt/40 max-md:max-w-full max-md:min-w-0;
   }
 
   .beyond-photo-grid {
-    @apply grid w-full gap-0.5 p-0.5 overflow-hidden;
+    @apply grid w-full min-w-0 gap-0.5 p-0.5 overflow-hidden max-md:max-w-full;
   }
 
   .beyond-photo-tile {

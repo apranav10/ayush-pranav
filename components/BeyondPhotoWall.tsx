@@ -343,7 +343,7 @@ export function BeyondPhotoWall({
   return (
     <div
       ref={shellRef}
-      className="beyond-photo-grid-shell"
+      className="beyond-photo-grid-shell max-md:max-w-full max-md:min-w-0"
       style={{ height: shellHeightPx, maxHeight: maxHeightPx }}
     >
       <div

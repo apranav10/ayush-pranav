@@ -53,12 +53,12 @@ export function Hero({ config }: { config: SiteConfig }) {
       aria-label="Home"
       className="h-screen max-h-screen flex flex-col bg-bg pt-nav snap-start snap-always overflow-hidden max-md:h-auto max-md:min-h-svh max-md:overflow-visible"
     >
-      <div className="hero-layout flex-1 min-h-0 w-full page-shell flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-10 py-5 lg:py-6 pb-24 lg:pb-28">
-        <div className="hero-photo-col lg:w-[44%] lg:max-w-[520px] shrink-0 min-h-0 flex animate-fade-in-left max-lg:h-[38vh] max-lg:max-h-[320px]">
+      <div className="hero-layout flex-1 min-h-0 w-full page-shell flex flex-col lg:flex-row lg:items-end gap-6 lg:gap-10 py-5 lg:py-6 pb-8 md:pb-24 lg:pb-28 max-md:flex-none max-md:min-h-0">
+        <div className="hero-photo-col lg:w-[44%] lg:max-w-[520px] shrink-0 min-h-0 flex animate-fade-in-left max-lg:h-[38vh] max-lg:max-h-[320px] max-md:w-full max-md:shrink-0">
           <HeroPhoto config={config} />
         </div>
 
-        <div className="hero-content-col flex-1 min-w-0 min-h-0 flex flex-col justify-between gap-7 lg:gap-8 text-left max-lg:justify-start max-lg:gap-5">
+        <div className="hero-content-col flex-1 min-w-0 min-h-0 flex flex-col justify-between gap-7 lg:gap-8 text-left max-lg:justify-start max-lg:gap-5 max-md:flex-none max-md:w-full">
           <div className="flex flex-col gap-7 lg:gap-8 max-lg:gap-5">
             {config.site_name && (
               <h1 className="m-0 shrink-0 font-display font-bold text-[clamp(40px,7.5vw,88px)] leading-none tracking-tight text-fg">
@@ -79,11 +79,11 @@ export function Hero({ config }: { config: SiteConfig }) {
             )}
 
             {subheadlinePills.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-2 max-md:w-full max-md:min-w-0 max-md:pr-1">
                 {subheadlinePills.map((line, i) => (
                   <span
                     key={`${i}-${line}`}
-                    className="inline-flex items-center px-4 py-1.5 bg-bg-alt border border-border-mid text-fg-muted rounded-tag text-sm font-medium tracking-wide"
+                    className="inline-flex items-center px-4 py-1.5 bg-bg-alt border border-border-mid text-fg-muted rounded-tag text-sm font-medium tracking-wide max-md:max-w-full max-md:whitespace-normal"
                   >
                     {line}
                   </span>
@@ -96,8 +96,8 @@ export function Hero({ config }: { config: SiteConfig }) {
             )}
           </div>
 
-          <div className="hero-cta-block shrink-0 flex flex-col items-start gap-2.5">
-            <div className="flex flex-wrap items-center gap-3">
+          <div className="hero-cta-block shrink-0 flex flex-col items-start gap-2.5 max-md:w-full">
+            <div className="flex flex-wrap items-center gap-3 max-md:w-full max-md:flex-col max-md:items-stretch max-md:gap-2.5">
               {config.linkedin_url && (
                 <a
                   href={config.linkedin_url}
@@ -120,7 +120,7 @@ export function Hero({ config }: { config: SiteConfig }) {
               )}
               <a
                 href="#work"
-                className="hero-action-btn inline-flex items-center gap-2 px-5 bg-primary text-white rounded-card text-sm font-medium tracking-wide transition-colors duration-300 ease-out hover:bg-secondary border-2 border-primary"
+                className="hero-action-btn inline-flex items-center justify-center gap-2 px-5 bg-primary text-white rounded-card text-sm font-medium tracking-wide transition-colors duration-300 ease-out hover:bg-secondary border-2 border-primary max-md:w-full"
               >
                 View my work →
               </a>
